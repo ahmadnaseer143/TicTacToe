@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useState,ReactInstanceManager } from 'react';
 import { Button, StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native';
+import * as Updates from 'expo-updates';
 
 const BB = (props) => {
   const [value, setValue] = useState("")
@@ -217,6 +218,11 @@ export default function App() {
     }
     win();
   }
+   const startAgain=async()=>{
+    setModalVisible(!modalVisible)
+    setBoard([["", "", ""], ["", "", ""], ["", "", ""]]);
+    await Updates.reloadAsync();
+  }
   return (
     <View style={styles.container}>
       <Modal            
@@ -227,7 +233,7 @@ export default function App() {
           {/*All views of Modal*/}  
               <View style = {styles.modal}>  
               <Text style = {styles.text}>{player?"Player2 Wins": "Player1 Wins"}</Text>  
-              <Button title="Click To Start Again" onPress = {() => { setModalVisible(!modalVisible);window.location.reload();}}/>  
+              <Button title="Click To Start Again" onPress = {startAgain}/>  
           </View>  
         </Modal>  
       <Text>Player 2: 0</Text>
