@@ -11,7 +11,6 @@ const BB = (props) => {
       if (props.player) {
         setValue("X")
         props.changePlayer()
-        // console.log(typeof props.btnNumber);
         props.boardDecoration(props.btnNumber)
       }
       else {
