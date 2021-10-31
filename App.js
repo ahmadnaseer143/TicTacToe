@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { Button, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Button, StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native';
 
 const BB = (props) => {
   const [value, setValue] = useState("")
@@ -11,13 +11,13 @@ const BB = (props) => {
         setValue("X")
         props.changePlayer()
         // console.log(typeof props.btnNumber);
-        props.winPlayer(props.btnNumber)
+        props.boardDecoration(props.btnNumber)
       }
       else {
         setValue("O")
         props.changePlayer()
         // console.log(typeof props.btnNumber);
-        props.winPlayer(props.btnNumber)
+        props.boardDecoration(props.btnNumber)
       }
       setisPress(true)
     }
@@ -33,80 +33,224 @@ const BB = (props) => {
 }
 
 export default function App() {
-  
-  const [board, setBoard] = useState([
-    ["","",""],
-    ["","",""],
-    ["","",""]
-  ]);
 
+  const [board, setBoard] = useState([["", "", ""], ["", "", ""], ["", "", ""]]);
+  const [modalVisible, setModalVisible] = useState(false);
   const [player, setPlayer] = useState(true)
-  const changePlayer= ()=>{
+  const changePlayer = () => {
     setPlayer(!player)
   }
 
-  const winPlayer=(val)=>{
-    if(val==1){
-      if(player) setBoard(board[0][0]="X")
-      else setBoard(board[0][0]="O")
+  const win=()=>{
+
+    // tiles
+    if(board[0][0]!=="" && board[0][1]!=="" && board[0][0] === board[0][1] && board[0][1] === board[0][2]){
+      console.log(player? "Player1 Wins": "Player2 Wins");
+      setModalVisible(!modalVisible);
     }
-    else if(val==2){
-      if(player) setBoard(board[0][1]="X")
-      else setBoard(board[0][1]="O")
+    else if(board[1][0]!=="" && board[1][1]!=="" && board[1][0] === board[1][1] && board[1][1] === board[1][2]){
+      console.log(player? "Player1 Wins": "Player2 Wins");
+      setModalVisible(!modalVisible);
     }
-    else if(val==3){
-      if(player) setBoard(board[0][2]="X")
-      else setBoard(board[0][2]="O")
+    else if(board[2][0]!=="" && board[2][1]!=="" && board[2][0] === board[2][1] && board[2][1] === board[2][2]){
+      console.log(player? "Player1 Wins": "Player2 Wins");
+      setModalVisible(!modalVisible);
     }
-    else if(val==4){
-      if(player) setBoard(board[1][0]="X")
-      else setBoard(board[1][0]="O")
+    // diagonal
+    else if(board[0][0]!=="" && board[1][1]!=="" && board[0][0] === board[1][1] && board[1][1] === board[2][2]){
+      console.log(player? "Player1 Wins": "Player2 Wins");
+      setModalVisible(!modalVisible);
     }
-    else if(val==5){
-      if(player) setBoard(board[1][1]="X")
-      else setBoard(board[1][1]="O")
+    else if(board[0][2]!=="" && board[1][1]!=="" && board[0][2] === board[1][1] && board[1][1] === board[2][0]){
+      console.log(player? "Player1 Wins": "Player2 Wins");
+      setModalVisible(!modalVisible);
     }
-    else if(val==6){
-      if(player) setBoard(board[1][2]="X")
-      else setBoard(board[1][2]="O")
+    // vertical 
+    else if(board[0][0]!=="" && board[1][0]!=="" && board[0][0] === board[1][0] && board[1][0] === board[2][0]){
+      console.log(player? "Player1 Wins": "Player2 Wins");
+      setModalVisible(!modalVisible);
     }
-    else if(val==7){
-      if(player) setBoard(board[2][0]="X")
-      else setBoard(board[2][0]="O")
+    else if(board[0][1]!=="" && board[1][1]!=="" && board[0][1] === board[1][1] && board[1][1] === board[2][1]){
+      console.log(player? "Player1 Wins": "Player2 Wins");
+      setModalVisible(!modalVisible);
     }
-    else if(val==8){
-      if(player) setBoard(board[2][1]="X")
-      else setBoard(board[2][1]="O")
+    else if(board[0][2]!=="" && board[1][2]!=="" && board[0][2] === board[1][2] && board[1][2] === board[2][2]){
+      console.log(player? "Player1 Wins": "Player2 Wins");
+      setModalVisible(!modalVisible);
     }
-    else if(val==9){
-      if(player) setBoard(board[2][2]="X")
-      else setBoard(board[2][2]="O")
+   
+  }
+
+  const boardDecoration = (val) => {
+    if (val == 1) {
+      const first_row = board[0]
+      const second_row = board[1]
+      const third_row = board[2]
+      if (player) {
+        first_row[0] = "X"
+        setBoard([first_row, second_row, third_row]);
+      }
+      else {
+        first_row[0] = "0"
+
+        setBoard([first_row, second_row, third_row])
+      }
     }
-    console.log(board);
+    else if (val == 2) {
+      const first_row = board[0]
+      const second_row = board[1]
+      const third_row = board[2]
+      if (player) {
+        first_row[1] = "X"
+        setBoard([first_row, second_row, third_row])
+      }
+      else {
+        first_row[1] = "0"
+
+        setBoard([first_row, second_row, third_row])
+      }
+
+    }
+    else if (val == 3) {
+      const first_row = board[0]
+      const second_row = board[1]
+      const third_row = board[2]
+      if (player) {
+        first_row[2] = "X"
+        setBoard([first_row, second_row, third_row])
+      }
+      else {
+        first_row[2] = "0"
+
+        setBoard([first_row, second_row, third_row])
+      }
+
+    }
+    else if (val == 4) {
+      const first_row = board[0]
+      const second_row = board[1]
+      const third_row = board[2]
+      if (player) {
+        second_row[0] = "X"
+        setBoard([first_row, second_row, third_row])
+      }
+      else {
+        second_row[0] = "0"
+
+        setBoard([first_row, second_row, third_row])
+      }
+
+    }
+    else if (val == 5) {
+      const first_row = board[0]
+      const second_row = board[1]
+      const third_row = board[2]
+      if (player) {
+        second_row[1] = "X"
+        setBoard([first_row, second_row, third_row])
+      }
+      else {
+        second_row[1] = "0"
+
+        setBoard([first_row, second_row, third_row])
+      }
+
+    }
+    else if (val == 6) {
+      const first_row = board[0]
+      const second_row = board[1]
+      const third_row = board[2]
+      if (player) {
+        second_row[2] = "X"
+        setBoard([first_row, second_row, third_row])
+      }
+      else {
+        second_row[2] = "0"
+
+        setBoard([first_row, second_row, third_row])
+      }
+
+    }
+    else if (val == 7) {
+      const first_row = board[0]
+      const second_row = board[1]
+      const third_row = board[2]
+      if (player) {
+        third_row[0] = "X"
+        setBoard([first_row, second_row, third_row])
+      }
+      else {
+        third_row[0] = "0"
+
+        setBoard([first_row, second_row, third_row])
+      }
+
+    }
+    else if (val == 8) {
+      const first_row = board[0]
+      const second_row = board[1]
+      const third_row = board[2]
+      if (player) {
+        third_row[1] = "X"
+        setBoard([first_row, second_row, third_row])
+      }
+      else {
+        third_row[1] = "0"
+
+        setBoard([first_row, second_row, third_row])
+      }
+
+    }
+    else if (val == 9) {
+      const first_row = board[0]
+      const second_row = board[1]
+      const third_row = board[2]
+      if (player) {
+        third_row[2] = "X"
+        setBoard([first_row, second_row, third_row])
+      }
+      else {
+        third_row[2] = "0"
+
+        setBoard([first_row, second_row, third_row])
+      }
+    }
+    win();
   }
   return (
     <View style={styles.container}>
-      <Text>Player 2: X</Text>
+      <Modal            
+          animationType = {"fade"}  
+          transparent = {false}  
+          visible = {modalVisible}  
+          onRequestClose = {() =>{ console.log("Modal has been closed.") } }>  
+          {/*All views of Modal*/}  
+              <View style = {styles.modal}>  
+              <Text style = {styles.text}>{player?"Player2 Wins": "Player1 Wins"}</Text>  
+              <Button title="Click To Start Again" onPress = {() => { setModalVisible(!modalVisible);window.location.reload();}}/>  
+          </View>  
+        </Modal>  
+      <Text>Player 2: 0</Text>
       {/* first line */}
       <View style={styles.line}>
-        <BB changePlayer={changePlayer} player={player} winPlayer={winPlayer} btnNumber={1}/>
-        <BB changePlayer={changePlayer} player={player} winPlayer={winPlayer} btnNumber={2}/>
-        <BB changePlayer={changePlayer} player={player} winPlayer={winPlayer} btnNumber={3}/>
+        <BB changePlayer={changePlayer} player={player} boardDecoration={boardDecoration} btnNumber={1} />
+        <BB changePlayer={changePlayer} player={player} boardDecoration={boardDecoration} btnNumber={2} />
+        <BB changePlayer={changePlayer} player={player} boardDecoration={boardDecoration} btnNumber={3} />
       </View>
       {/* second line */}
       <View style={styles.line}>
-        <BB changePlayer={changePlayer} player={player} winPlayer={winPlayer} btnNumber={4}/>
-        <BB changePlayer={changePlayer} player={player} winPlayer={winPlayer} btnNumber={5}/>
-        <BB changePlayer={changePlayer} player={player} winPlayer={winPlayer} btnNumber={6}/>
+        <BB changePlayer={changePlayer} player={player} boardDecoration={boardDecoration} btnNumber={4} />
+        <BB changePlayer={changePlayer} player={player} boardDecoration={boardDecoration} btnNumber={5} />
+        <BB changePlayer={changePlayer} player={player} boardDecoration={boardDecoration} btnNumber={6} />
       </View>
-      
+
       {/* third line */}
       <View style={styles.line}>
-        <BB changePlayer={changePlayer} player={player} winPlayer={winPlayer} btnNumber={7}/>
-        <BB changePlayer={changePlayer} player={player} winPlayer={winPlayer} btnNumber={8}/>
-        <BB changePlayer={changePlayer} player={player} winPlayer={winPlayer} btnNumber={9}/>
+        <BB changePlayer={changePlayer} player={player} boardDecoration={boardDecoration} btnNumber={7} />
+        <BB changePlayer={changePlayer} player={player} boardDecoration={boardDecoration} btnNumber={8} />
+        <BB changePlayer={changePlayer} player={player} boardDecoration={boardDecoration} btnNumber={9} />
       </View>
-      <Text>Player 1: 0</Text>
+      <Text>Player 1: X</Text>
     </View>
   );
 }
@@ -121,5 +265,21 @@ const styles = StyleSheet.create({
   line: {
     flexDirection: "row",
     paddingBottom: 10,
-  },
+  },  
+  modal: {  
+  justifyContent: 'center',  
+  alignItems: 'center',   
+  backgroundColor : "#00BCD4",   
+  height: 300 ,  
+  width: '80%',  
+  borderRadius:10,  
+  borderWidth: 1,  
+  borderColor: '#fff',    
+  marginTop: 80,  
+  marginLeft: 40,  
+  },  
+  text: {  
+    color: '#3f2949',  
+    marginTop: 10  
+  } 
 });
